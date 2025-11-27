@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xorizon Team Profile</title>
+    <title>Xorizon Team Founder Profile</title>
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Configure Tailwind for 'Inter' font -->
@@ -26,20 +26,15 @@
 
     <!-- Main Content Container -->
     <main class="flex-grow p-4 md:p-8">
-        <div id="profile-container" class="max-w-2xl mx-auto">
-            <!-- Loading and Error messages will go here -->
-            <div id="status-message" class="text-center text-lg text-gray-600 mt-10 hidden"></div>
-            <div id="error-message" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl relative mt-10 hidden" role="alert">
-                <strong class="font-bold">Error!</strong>
-                <span id="error-text" class="block sm:inline"></span>
-            </div>
-
-            <!-- Profile Card (Initially Hidden) -->
-            <div id="profile-card" class="bg-white shadow-2xl rounded-3xl overflow-hidden transform transition duration-500 hidden">
+        <div class="max-w-2xl mx-auto">
+            
+            <!-- Profile Card (Static Display) -->
+            <!-- The 'hidden' class has been removed in the JS, but we use an initial transition state -->
+            <div id="profile-card" class="bg-white shadow-2xl rounded-3xl overflow-hidden transform transition duration-500 hover:scale-[1.01] opacity-0 translate-y-4">
                 
                 <!-- Profile Header Section -->
                 <div class="relative bg-gradient-to-r from-indigo-500 to-purple-600 p-8 pt-20 text-center">
-                    <!-- Profile Image (Placeholder) -->
+                    <!-- Profile Image -->
                     <img id="profile-img" class="w-32 h-32 object-cover rounded-full border-4 border-white shadow-xl mx-auto absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2" 
                          src="" alt="Profile Picture" 
                          onerror="this.onerror=null;this.src='https://placehold.co/128x128/a3a3a3/ffffff?text=👤';"
@@ -82,76 +77,59 @@
                 </div>
             </div>
 
-            
         </div>
     </main>
     
     <!-- Footer -->
     <footer class="mt-8 p-4 text-center text-sm text-gray-500 border-t">
-        &copy; 2025 Xorizon Team. Member viewer webpage.
+        &copy; 2025 Xorizon Team. Member Profiles.
     </footer>
 
-    <!-- JavaScript for Data Handling and Display -->
+    <!-- JavaScript for Static Data Injection -->
     <script>
         
-        // Helper function to show/hide elements
-        const getEl = (id) => document.getElementById(id);
+        // --- 1. Static Profile Data ---
+        // This is the hardcoded JSON data provided by the user.
+        const profileData = {
+            "imgUrl": "https://files.catbox.moe/c1scus.jpg",
+            "name": "Lobo Htet",
+            "role": "Admin and Xorizon Founder",
+            "dob": "8 March 2008",
+            "memberSince": "2025-Nov-24",
+            "uuid": "d9b6a3e8-5c02-4f1a-9e7b-8c4d5f0e1a2b",
+            "favouriteGames": [
+                "Genshin Impact",
+                "Minecraft",
+                "Counter Strike 2",
+                "Trepang²",
+                "Garry's Mod"
+            ]
+        };
 
         /**
-         * Hides all dynamic content containers (profile, status, error).
+         * Renders the static profile data into the HTML template.
          */
-        function clearContent() {
-            getEl('profile-card').classList.add('hidden');
-            getEl('error-message').classList.add('hidden');
-            getEl('status-message').classList.add('hidden');
-        }
-
-        /**
-         * Displays a non-error status message (e.g., Loading, Instructions).
-         * @param {string} message - The message to display.
-         */
-        function displayStatus(message) {
-            clearContent();
-            const statusEl = getEl('status-message');
-            statusEl.textContent = message;
-            statusEl.classList.remove('hidden');
-        }
-
-        /**
-         * Displays the error message.
-         * @param {string} message - The error message to display.
-         */
-        function displayError(message) {
-            clearContent();
-            getEl('error-text').textContent = message;
-            getEl('error-message').classList.remove('hidden');
-        }
-
-        /**
-         * Renders the profile data into the HTML template.
-         * @param {object} member - The member object loaded from JSON.
-         */
-        function renderProfile(member) {
-            clearContent(); // Clear status/error messages
-            getEl('profile-card').classList.remove('hidden');
-
+        function renderProfile() {
+            const member = profileData;
+            const card = document.getElementById('profile-card');
+            
             // Set main details
-            getEl('profile-img').src = member.imgUrl || 'https://placehold.co/128x128/a3a3a3/ffffff?text=👤';
-            getEl('profile-name').textContent = member.name || 'N/A';
-            getEl('profile-role').textContent = member.role || 'Team Member';
-            getEl('profile-dob').textContent = member.dob || 'Unknown';
-            getEl('profile-member-since').textContent = member.memberSince || 'Unknown';
-            getEl('profile-uuid').textContent = member.uuid || 'N/A';
+            document.getElementById('profile-img').src = member.imgUrl;
+            document.getElementById('profile-name').textContent = member.name;
+            document.getElementById('profile-role').textContent = member.role;
+            document.getElementById('profile-dob').textContent = member.dob;
+            document.getElementById('profile-member-since').textContent = member.memberSince;
+            document.getElementById('profile-uuid').textContent = member.uuid;
 
             // Render favourite games list
-            const gamesList = getEl('profile-games-list');
-            gamesList.innerHTML = ''; // Clear previous content
+            const gamesList = document.getElementById('profile-games-list');
+            gamesList.innerHTML = '';
             
             if (member.favouriteGames && member.favouriteGames.length > 0) {
                 member.favouriteGames.forEach(game => {
                     const li = document.createElement('li');
                     li.className = 'flex items-center text-gray-700 text-base';
-                    // Using an SVG icon for aesthetics
+                    // SVG icon for aesthetic bullet points
                     li.innerHTML = `
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-500 mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
@@ -163,50 +141,16 @@
             } else {
                  gamesList.innerHTML = `<li class="text-gray-500 italic">No favorite games listed yet.</li>`;
             }
+            
+            // Apply simple transition effect
+            setTimeout(() => {
+                card.classList.remove('opacity-0', 'translate-y-4');
+            }, 50); 
         }
 
-        /**
-         * Loads the member profile dynamically from a JSON file.
-         */
-        async function loadProfile() {
-            // Get the 'm' parameter from the URL
-            const urlParams = new URLSearchParams(window.location.search);
-            const memberKey = urlParams.get('m');
-
-            if (!memberKey) {
-                displayStatus("Please provide a member key in the URL using the '?m=' parameter, e.g., '?m=lobo'");
-                return;
-            }
-
-            const filename = `${memberKey.toLowerCase()}.json`;
-            const filePath = `./${filename}`;
-
-            displayStatus(`Loading profile for member: ${memberKey.toUpperCase()}...`);
-
-            try {
-                // Fetch the JSON file dynamically
-                const response = await fetch(filePath);
-
-                if (!response.ok) {
-                    if (response.status === 404) {
-                        throw new Error(`Profile file '${filename}' not found.`);
-                    }
-                    throw new Error(`Failed to load profile. HTTP Status: ${response.status}`);
-                }
-
-                const memberData = await response.json();
-                renderProfile(memberData);
-
-            } catch (error) {
-                console.error("Profile loading error:", error);
-                displayError(`Failed to load profile: ${error.message}.`);
-            }
-        }
-
-        // Run the function when the page loads
-        window.onload = loadProfile;
+        // Execute the render function when the page loads
+        window.onload = renderProfile;
     </script>
 </body>
 </html>
-
 
