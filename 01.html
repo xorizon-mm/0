@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xorizon Team Founder Profile</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configure Tailwind for 'Inter' font -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        /* Custom CSS to ensure the image sits higher above the card */
+        #profile-img-container {
+            /* This div wraps the image and creates space below it */
+            height: 6rem; /* A bit more than half the image height (32 / 2 = 16.5) */
+            background-color: transparent;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-indigo-600 shadow-md p-4 text-white">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-3xl font-extrabold tracking-tight">Xorizon Team</h1>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow p-4 md:p-8">
+        <div class="max-w-2xl mx-auto">
+            
+            <!-- Profile Card (Static Display) -->
+            <div id="profile-card" class="bg-white shadow-2xl rounded-3xl overflow-visible transform transition duration-500 hover:scale-[1.01] opacity-0 translate-y-4">
+                
+                <!-- 1. Top Space & Image Wrapper -->
+                <div id="profile-img-container" class="relative z-10 mx-auto">
+                    <!-- Profile Image (w-32 h-32 -> 8rem x 8rem) -->
+                    <img id="profile-img" class="w-32 h-32 object-cover rounded-full border-4 border-white shadow-xl mx-auto absolute top-7 left-1/2 -translate-x-1/2 -translate-y-1/2" 
+                         src="" alt="Profile Picture" 
+                         onerror="this.onerror=null;this.src='https://placehold.co/128x128/a3a3a3/ffffff?text=👤';"
+                    >
+                </div>
+
+                <!-- 2. Profile Header Section (Title and Role) -->
+                <div class="relative bg-gradient-to-r from-indigo-500 to-purple-600 p-8 pt-10 text-center -mt-16 rounded-t-2xl">
+                    <h2 id="profile-name" class="text-3xl font-bold text-white mt-4"></h2>
+                    <p id="profile-role" class="text-lg font-medium text-indigo-100"></p>
+                </div>
+
+                <!-- 3. Profile Details Grid -->
+                <div class="p-6 md:p-8 space-y-6">
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- Detail Item: DoB -->
+                        <div class="p-3 bg-gray-50 rounded-xl shadow-inner">
+                            <p class="text-xs font-semibold uppercase text-gray-500">Date of Birth</p>
+                            <p id="profile-dob" class="text-gray-900 text-base font-medium"></p>
+                        </div>
+                        
+                        <!-- Detail Item: Member Since -->
+                        <div class="p-3 bg-gray-50 rounded-xl shadow-inner">
+                            <p class="text-xs font-semibold uppercase text-gray-500">Member Since</p>
+                            <p id="profile-member-since" class="text-gray-900 text-base font-medium"></p>
+                        </div>
+                        
+                        <!-- Detail Item: UUID -->
+                        <div class="p-3 bg-gray-50 rounded-xl shadow-inner sm:col-span-2">
+                            <p class="text-xs font-semibold uppercase text-gray-500">Unique ID (UUID)</p>
+                            <code id="profile-uuid" class="text-gray-700 text-sm bg-gray-200 px-2 py-1 rounded-md overflow-auto block whitespace-nowrap"></code>
+                        </div>
+                    </div>
+
+                    <!-- Favourite Games List -->
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3 border-b pb-1">Favourite Games</h3>
+                        <ul id="profile-games-list" class="space-y-2">
+                            <!-- Games will be injected here -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="mt-8 p-4 text-center text-sm text-gray-500 border-t">
+        &copy; 2024 Xorizon Team. Official Member Viewing Webpage.
+    </footer>
+
+    <!-- JavaScript for Static Data Injection -->
+    <script>
+        
+        // --- 1. Static Profile Data ---
+        const profileData = {
+            "imgUrl": "https://files.catbox.moe/c1scus.jpg",
+            "name": "Lobo Htet",
+            "role": "Admin and Xorizon Founder",
+            "dob": "8 March 2008",
+            "memberSince": "2025-Nov-24",
+            "uuid": "d9b6a3e8-5c02-4f1a-9e7b-8c4d5f0e1a2b",
+            "favouriteGames": [
+                "Genshin Impact",
+                "Minecraft",
+                "Counter Strike 2",
+                "Trepang²",
+                "Garry's Mod"
+            ]
+        };
+
+        /**
+         * Renders the static profile data into the HTML template.
+         */
+        function renderProfile() {
+            const member = profileData;
+            const card = document.getElementById('profile-card');
+            
+            // Set main details
+            document.getElementById('profile-img').src = member.imgUrl;
+            document.getElementById('profile-name').textContent = member.name;
+            document.getElementById('profile-role').textContent = member.role;
+            document.getElementById('profile-dob').textContent = member.dob;
+            document.getElementById('profile-member-since').textContent = member.memberSince;
+            document.getElementById('profile-uuid').textContent = member.uuid;
+
+            // Render favourite games list
+            const gamesList = document.getElementById('profile-games-list');
+            gamesList.innerHTML = '';
+            
+            if (member.favouriteGames && member.favouriteGames.length > 0) {
+                member.favouriteGames.forEach(game => {
+                    const li = document.createElement('li');
+                    li.className = 'flex items-center text-gray-700 text-base';
+                    // SVG icon for aesthetic bullet points
+                    li.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-500 mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
+                        </svg>
+                        <span>${game}</span>
+                    `;
+                    gamesList.appendChild(li);
+                });
+            } else {
+                 gamesList.innerHTML = `<li class="text-gray-500 italic">No favorite games listed yet.</li>`;
+            }
+            
+            // Apply simple transition effect
+            setTimeout(() => {
+                card.classList.remove('opacity-0', 'translate-y-4');
+            }, 50); 
+        }
+
+        // Execute the render function when the page loads
+        window.onload = renderProfile;
+    </script>
+</body>
+</html>
+
