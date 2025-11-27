@@ -13,6 +13,12 @@
             font-family: 'Inter', sans-serif;
             background-color: #f3f4f6;
         }
+        /* Custom CSS to ensure the image sits higher above the card */
+        #profile-img-container {
+            /* This div wraps the image and creates space below it */
+            height: 6rem; /* A bit more than half the image height (32 / 2 = 16.5) */
+            background-color: transparent;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -29,22 +35,24 @@
         <div class="max-w-2xl mx-auto">
             
             <!-- Profile Card (Static Display) -->
-            <!-- The 'hidden' class has been removed in the JS, but we use an initial transition state -->
-            <div id="profile-card" class="bg-white shadow-2xl rounded-3xl overflow-hidden transform transition duration-500 hover:scale-[1.01] opacity-0 translate-y-4">
+            <div id="profile-card" class="bg-white shadow-2xl rounded-3xl overflow-visible transform transition duration-500 hover:scale-[1.01] opacity-0 translate-y-4">
                 
-                <!-- Profile Header Section -->
-                <div class="relative bg-gradient-to-r from-indigo-500 to-purple-600 p-8 pt-20 text-center">
-                    <!-- Profile Image -->
+                <!-- 1. Top Space & Image Wrapper -->
+                <div id="profile-img-container" class="relative z-10 mx-auto">
+                    <!-- Profile Image (w-32 h-32 -> 8rem x 8rem) -->
                     <img id="profile-img" class="w-32 h-32 object-cover rounded-full border-4 border-white shadow-xl mx-auto absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2" 
                          src="" alt="Profile Picture" 
                          onerror="this.onerror=null;this.src='https://placehold.co/128x128/a3a3a3/ffffff?text=👤';"
                     >
+                </div>
 
+                <!-- 2. Profile Header Section (Title and Role) -->
+                <div class="relative bg-gradient-to-r from-indigo-500 to-purple-600 p-8 pt-10 text-center -mt-16 rounded-t-2xl">
                     <h2 id="profile-name" class="text-3xl font-bold text-white mt-4"></h2>
                     <p id="profile-role" class="text-lg font-medium text-indigo-100"></p>
                 </div>
 
-                <!-- Profile Details Grid -->
+                <!-- 3. Profile Details Grid -->
                 <div class="p-6 md:p-8 space-y-6">
                     
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -82,14 +90,13 @@
     
     <!-- Footer -->
     <footer class="mt-8 p-4 text-center text-sm text-gray-500 border-t">
-        &copy; 2025 Xorizon Team. Member Profiles.
+        &copy; 2024 Xorizon Team. Official Member Viewing Webpage.
     </footer>
 
     <!-- JavaScript for Static Data Injection -->
     <script>
         
         // --- 1. Static Profile Data ---
-        // This is the hardcoded JSON data provided by the user.
         const profileData = {
             "imgUrl": "https://files.catbox.moe/c1scus.jpg",
             "name": "Lobo Htet",
